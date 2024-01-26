@@ -13,7 +13,6 @@ class User():
     - password: private string hash in MD5
     """
 
-    __password = None
 
     def __init__(self):
         """
@@ -21,6 +20,7 @@ class User():
         - assigned an unique `id`
         """
         self.id = str(uuid.uuid4())
+        self.__password = None
 
     @property
     def password(self):
@@ -54,8 +54,9 @@ class User():
             return False
         if self.__password is None:
             return False
-        if hashlib.md5(pwd.encode()).hexdigest().upper() == self.__password:
-            return True
+        print("pwd = {}, tocheck = {}".format(self.__password, pwd))
+
+        return hashlib.md5(pwd.encode()).hexdigest().lower() == self.__password
 
 if __name__ == '__main__':
     print("Test User")
@@ -84,7 +85,7 @@ if __name__ == '__main__':
     if user_2.password is not None:
         print("User.password should be None if setter to an integer")
 
-    if user_1.is_valid_password(u_pwd):
+    if not user_1.is_valid_password(u_pwd):
         print("is_valid_password should return True if it's the right \
 password")
 
